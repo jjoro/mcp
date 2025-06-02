@@ -1,0 +1,54 @@
+:root {
+    color-scheme: light;
+    /* --color-accent: oklch(71% 0.194 13.428);
+    --color-accent-content: oklch(50% 0.118 165.612); */
+    
+    /* badge-accent 스타일 정의 */
+    /* --badge-accent: oklch(71% 0.194 13.428);
+    --badge-accent-content: var(--color-accent-content); */
+    
+    thead {
+        background-color: #e1e8f0;
+        color: #2c5783;
+        border: 1px solid #cedbe9;
+    }
+    tfoot {
+        background-color: #e1e8f0;
+        color: #2c5783;
+        
+        border: 1px solid #cedbe9;
+    }
+}
+
+/* Styles for the new card design */
+.profit-section {
+    border-bottom: 1px solid #e5e7eb; /* gray-200 */
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+.profit-value {
+    font-size: 2.25rem; /* text-4xl */
+    font-weight: 700; /* font-bold */
+    color: #1f2937; /* gray-800 */
+}
+.income-expense-section .value {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 600; /* font-semibold */
+}
+.income-value {
+    color: #10b981; /* emerald-500 */
+}
+.expense-value {
+    color: #ef4444; /* red-500 */
+}
+.card-footer-custom {
+    border-top: 1px solid #e5e7eb; /* gray-200 */
+    padding-top: 1rem;
+    font-size: 0.875rem; /* text-sm */
+}
+  
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
