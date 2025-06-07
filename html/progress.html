@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaisyUI 프로그레스 바, 툴팁 및 방사형 진행률 예제</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons@1.13.14/iconfont/material-icons.min.css">
+    <style>
+        /* 기본 스타일링 */
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f3f4f6;
+            /* Tailwind gray-100 */
+            padding: 20px;
+            gap: 1rem;
+            /* 요소들 사이의 간격 */
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            /* rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            /* shadow-lg */
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* 툴팁 마커를 위한 스타일 (거의 보이지 않도록) */
+        .tooltip-marker {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-2xl font-bold mb-6 text-center text-gray-700">동적 프로그레스 요소</h1>
+
+        <h2 class="text-lg font-semibold mt-6 mb-2 text-gray-600">위치 이동 툴팁 프로그레스 바</h2>
+        <div class="w-full" style="position: relative; padding-top: 30px; margin-bottom: 20px;">
+            <progress class="progress progress-info w-full" value="0" max="100"></progress>
+            <div class="tooltip tooltip-open tooltip-info tooltip-marker"
+                style="left: 0%; top: -8px; /* 프로그레스 바 위에 위치하도록 조정 */" data-tip="0%">
+            </div>
+        </div>
+
+        <h2 class="text-lg font-semibold mt-6 mb-2 text-gray-600">방사형 진행률</h2>
+        <div class="flex justify-center mb-6">
+            <div class="radial-progress text-info" style="--value:0; --size:3.5rem; --thickness: 4px;" /* 크기 및 두께 조정 */
+                role="progressbar">0%</div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <button id="resetButton" class="btn btn-secondary">모두 초기화</button>
+        </div>
+    </div>
+
+    <script>
+        // 프로그레스 관련 요소 (클래스 기반 선택)
+        const infoProgressEl = document.querySelector('.progress'); // 첫 번째 .progress 요소 선택
+        const infoTooltipMarkerEl = document.querySelector('.tooltip-marker'); // 첫 번째 .tooltip-marker 요소 선택
+        const infoRadialProgressEl = document.querySelector('.radial-progress'); // 첫 번째 .radial-progress 요소 선택
+        let currentInfoValue = 0;
+        let intervalInfoId;
+
+        // 프로그레스 및 관련 요소 업데이트 함수
+        function updateInfoProgress() {
+            currentInfoValue += 10;
+            if (currentInfoValue > 100) {
+                currentInfoValue = 0; // 100을 넘으면 0으로 리셋
+            }
+            // 프로그레스 바 값 업데이트
+            if (infoProgressEl) {
+                infoProgressEl.value = currentInfoValue;
+            }
+
+            // 툴팁 마커 위치 및 data-tip 업데이트
+            if (infoTooltipMarkerEl) {
+                infoTooltipMarkerEl.style.left = `${currentInfoValue}%`;
+                infoTooltipMarkerEl.setAttribute('data-tip', `${currentInfoValue}%`);
+            }
+
+            // 방사형 프로그레스 값 및 텍스트 업데이트
+            if (infoRadialProgressEl) {
+                infoRadialProgressEl.style.setProperty('--value', currentInfoValue);
+                infoRadialProgressEl.textContent = `${currentInfoValue}%`;
+            }
+        }
+
+        // 프로그레스 관련 요소 시작 함수
+        function startInfoProgress() {
+            // 이전 인터벌이 있다면 중지
+            if (intervalInfoId) {
+                clearInterval(intervalInfoId);
+            }
+            // 요소들이 존재하는지 확인 후 인터벌 시작
+            if (infoProgressEl && infoTooltipMarkerEl && infoRadialProgressEl) {
+                intervalInfoId = setInterval(updateInfoProgress, 1100); // 1.1초마다 업데이트
+            } else {
+                console.error("하나 이상의 프로그레스 관련 요소를 찾을 수 없습니다. 스크립트가 올바르게 실행되지 않을 수 있습니다.");
+            }
+        }
+
+        // 초기화 버튼 이벤트 리스너
+        const resetButton = document.getElementById('resetButton');
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                currentInfoValue = 0;
+                if (infoProgressEl) {
+                    infoProgressEl.value = currentInfoValue;
+                }
+                if (infoTooltipMarkerEl) {
+                    infoTooltipMarkerEl.style.left = `${currentInfoValue}%`;
+                    infoTooltipMarkerEl.setAttribute('data-tip', `${currentInfoValue}%`);
+                }
+                if (infoRadialProgressEl) {
+                    infoRadialProgressEl.style.setProperty('--value', currentInfoValue);
+                    infoRadialProgressEl.textContent = `${currentInfoValue}%`;
+                }
+                // 진행 중인 인터벌이 있다면 초기화 후 다시 시작
+                startInfoProgress();
+            });
+        }
+
+        // 페이지 로드 시 프로그레스 바 업데이트 시작 및 초기 상태 설정
+        if (infoRadialProgressEl) {
+            infoRadialProgressEl.style.setProperty('--value', 0);
+            infoRadialProgressEl.textContent = `0%`;
+        }
+        if (infoTooltipMarkerEl) {
+            infoTooltipMarkerEl.style.left = `0%`;
+            infoTooltipMarkerEl.setAttribute('data-tip', `0%`);
+        }
+        startInfoProgress();
+
+    </script>
+</body>
+
+</html>
