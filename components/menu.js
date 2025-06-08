@@ -287,7 +287,7 @@ const generatedMenuHTML = createDaisyUIMenuFromRawData(myMenuData);
 document.addEventListener('DOMContentLoaded', () => {
   const menuContainer = document.getElementById('menu-container');
   if (menuContainer) {
-    menuContainer.innerHTML = generatedMenuHTML;
+    menuContainer.insertAdjacentHTML('beforeend', generatedMenuHTML);
   } else {
     console.warn("메뉴를 삽입할 컨테이너(id='menu-container')를 찾을 수 없습니다. body의 시작 부분에 임시로 메뉴를 추가합니다.");
     const tempDiv = document.createElement('div');
