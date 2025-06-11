@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DaisyUI 프로그레스 바, 툴팁 및 방사형 진행률 예제</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons@1.13.14/iconfont/material-icons.min.css">
     <style>
         /* 기본 스타일링 */
@@ -20,26 +20,17 @@
             background-color: #f3f4f6;
             /* Tailwind gray-100 */
             padding: 20px;
-            gap: 1rem;
             /* 요소들 사이의 간격 */
         }
 
         .container {
             background-color: white;
-            padding: 2rem;
             border-radius: 0.5rem;
             /* rounded-lg */
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             /* shadow-lg */
             width: 100%;
             max-width: 500px;
-        }
-
-        /* 툴팁 마커를 위한 스타일 (거의 보이지 않도록) */
-        .tooltip-marker {
-            position: absolute;
-            width: 1px;
-            height: 1px;
         }
     </style>
 </head>
@@ -49,19 +40,38 @@
         <h1 class="text-2xl font-bold mb-6 text-center text-gray-700">동적 프로그레스 요소</h1>
 
         <h2 class="text-lg font-semibold mt-6 mb-2 text-gray-600">위치 이동 툴팁 프로그레스 바</h2>
-        <div class="w-full" style="position: relative; padding-top: 30px; margin-bottom: 20px;">
+
+        <div class="flex flex-col items-center justify-center h-screen">
+            <div class="tooltip tooltip-top" data-tip="나는 위에 있어!">
+                <button class="btn btn-primary">마우스를 올려보세요</button>
+            </div>
+
+            <div class="h-20"></div> {/* 이 공간은 툴팁이 위로 올라간 것을 시각적으로 확인하기 위함입니다. */}
+
+            <div class="tooltip tooltip-top -mb-3" data-tip="나는 위에 있지만 빈 공간이 없어!">
+                <button class="btn btn-secondary">마우스를 올려보세요 (공간 제거됨)</button>
+            </div>
+
+            <div class="h-20"></div> {/* 이 공간은 툴팁이 위로 올라간 것을 시각적으로 확인하기 위함입니다. */}
+
+            <div class="tooltip tooltip-top" data-tip="나는 위에 있지만 빈 공간이 없어! (커스텀 CSS)">
+                <button class="btn btn-accent custom-tooltip-top">마우스를 올려보세요 (커스텀 CSS)</button>
+            </div>
+        </div>
+        <!-- 프로그레스 1 -->
+        <div class="w-full" style="position: relative;">
             <progress class="progress progress-info w-full" value="0" max="100"></progress>
-            <div class="tooltip tooltip-open tooltip-info tooltip-marker"
-                style="left: 0%; top: -8px; /* 프로그레스 바 위에 위치하도록 조정 */" data-tip="0%">
+            <div class="tooltip tooltip-open tooltip-info tooltip-marker bottom-7" data-tip="0%">
             </div>
         </div>
 
         <h2 class="text-lg font-semibold mt-6 mb-2 text-gray-600">방사형 진행률</h2>
+        <!-- 프로그레스 2 -->
         <div class="flex justify-center mb-6">
             <div class="radial-progress text-info" style="--value:0; --size:3.5rem; --thickness: 4px;" /* 크기 및 두께 조정 */
                 role="progressbar">0%</div>
         </div>
-
+        <!-- 리셋 버튼 -->
         <div class="mt-8 text-center">
             <button id="resetButton" class="btn btn-secondary">모두 초기화</button>
         </div>
